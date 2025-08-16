@@ -27,7 +27,7 @@ class DanhMucController extends Controller
      */
     public function store(DanhMucRequest $request)
     {
-
+        
         $danhmuc = DanhMuc::create($request->all());
 
         return response()->json([

@@ -89,7 +89,7 @@ Route::prefix('admin')->group(function (){
     //hopdong
     Route::prefix('hopdong')->group(function (){
         Route::get('/', [HopdongController::class, 'index']);
-        Route::post('/', [HopdongController::class, 'store']);
+        Route::post('/', [HopdongController::class, 'create']);
         Route::put('/{id}', [HopdongController::class, 'update']);
         Route::delete('/{id}', [HopdongController::class, 'destroy']);
     });

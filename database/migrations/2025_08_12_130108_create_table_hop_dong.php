@@ -11,20 +11,32 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('hopdongs', function (Blueprint $table) {
+        Schema::create('hopdongs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_phong')->nullable();
-            $table->unsignedBigInteger('id_users')->nullable();
-            $table->string('ten_hop_dong')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
-            $table->decimal('tien_coc', 18, 2)->nullable();
-            $table->decimal('tien_phong', 18, 2)->nullable();
-            $table->integer('trang_thai')->nullable();
-            $table->string('file_hop_dong')->nullable();
+            $table->string('ma_hop_dong')->unique(); // Mã hợp đồng
+            $table->unsignedBigInteger('id_chu_tro'); // Khóa ngoại chủ trọ
+            $table->unsignedBigInteger('id_khach_thue'); // Khóa ngoại khách thuê
+            $table->unsignedBigInteger('id_phong'); // Khóa ngoại phòng
+
+            $table->date('ngay_ky');
+            $table->date('ngay_bat_dau');
+            $table->date('ngay_ket_thuc');
+
+            $table->decimal('gia_thue', 15, 2); // Giá thuê (VD: 3500000.00)
+            $table->decimal('tien_coc', 15, 2)->nullable(); // Tiền cọc
+
+            $table->enum('hinh_thuc_thanh_toan', ['Tien mat', 'Chuyen khoan']);
+            $table->enum('trang_thai', ['Hieu luc', 'Het han', 'Huy'])->default('Hieu luc');
+
+            $table->longText('noi_dung')->nullable();
+            $table->string('file_pdf')->nullable();
+            $table->string('file_word')->nullable();
+
             $table->timestamps();
 
-            $table->foreign('id_users')->references('id')->on('users')->onDelete('cascade');
+            // Khóa ngoại
+            $table->foreign('id_chu_tro')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_khach_thue')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_phong')->references('id')->on('phongtro')->onDelete('cascade');
         });
     }
