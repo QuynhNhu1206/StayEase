@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -14,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $userId = Auth::id();
+        $users = User::findOrFail($userId);
         return response()->json([
             'status'=>'success',
             'data'=> $users
@@ -34,12 +36,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $user = User::create( $request->all());
-        return response()->Json([
-            'status'=>'success',
-            'message'=>'Thêm user thành công',
-            'data'=> $user
-        ], 201);
+
     }
 
     /**
@@ -47,7 +44,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        
+
     }
 
     /**
@@ -61,9 +58,39 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserRequest $request, string $id)
     {
-        //
+        //$id_user = Auth::id();
+        $users = User::findOrFail($id);
+
+        $data = $request->all();
+        $file = $request->avatar;
+
+        if(!empty($file)){
+            $data['avatar'] = $file->getClientOriginalName();
+        }
+
+        if ($data['password']) {
+            $data['password'] = bcrypt($data['password']);
+        }else{
+            $data['password'] = $users->password;
+        }
+
+        $dirPath = public_path('upload/user/avatar/' . $id);
+                if (!file_exists($dirPath)) {
+                    mkdir($dirPath, 0777, true);
+                }
+        if ($users->update($data)) {
+            if(!empty($file)){
+                $file->move($dirPath.'/', $file->getClientOriginalName());
+            }
+            return response()->json([
+                'status'=>'success',
+                'message'=>'Cập nhật thông tin thành công',
+                'data'=> $data
+            ], 201);
+        }
+
     }
 
     /**
@@ -71,6 +98,15 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        if ($user->delete()) {
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Xóa user thành công',
+                'data' => User::all()
+
+            ], 200);
+        }
     }
 }

@@ -23,7 +23,9 @@ class User extends Authenticatable
             'ngay_sinh',
             'email',
             'password',
+            'avatar',
             'que_quan',
+            'level',
             'so_dien_thoai',
             'gioi_tinh',
             'cccd'

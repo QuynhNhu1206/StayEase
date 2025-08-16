@@ -62,9 +62,18 @@ class QuyenController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(QuyenRequest $request, string $id)
     {
-        //
+         $quyens = quyen::findOrFail($id);
+        $data = $request->all();
+        if ($quyens->update($data)) {
+            return response()->json([
+                'id' => $id,
+                'status' => 'Success',
+                'message' => 'Cập nhật quyền thành công',
+                'data' => $data
+            ]);
+        }
     }
 
     /**
@@ -72,6 +81,16 @@ class QuyenController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+         $quyen = quyen::findOrFail($id);
+
+        if ($quyen->delete()) {
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Xóa phòng trọ thành công',
+                'data' => quyen::all()
+
+            ], 200);
+        }
     }
 }
