@@ -28,7 +28,8 @@ class UserRequest extends FormRequest
             'name'=>'required|string|max:255',
             'ngay_sinh'=>'required|date',
             'email'=>'required|email',
-            'password'=>'required|string',
+            'avatar'=>'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'password'=>'nullable|string',
             'que_quan'=>'required|string',
             'so_dien_thoai'=>'required|string',
             'gioi_tinh'=>'required',
@@ -43,7 +44,10 @@ class UserRequest extends FormRequest
             'max'=>':attribute: không được vượt quá giới hạn kí tự :max',
             'date'=>':attribute: không đúng định dạng ngày tháng',
             'email'=>':attribute: không đúng định dạng email',
-            'unique'=>':attribute: đã tồn tại'
+            'unique'=>':attribute: đã tồn tại',
+            'image' => ':attribute: :hình ảnh upload lên phải là hình ảnh',
+            'mimes' => ':attribute: :hình ảnh upload lên phải là các định dạng sau: jpeg, png, jpg',
+            'avatar.max' => ':attribute: Hình ảnh upload lên vượt qua kích thước cho phép :max'
         ];
     }
 
@@ -58,12 +62,15 @@ class UserRequest extends FormRequest
             'que_quan'=>'Quê quán',
             'so_dien_thoai'=>'Số điện thoại',
             'gioi_tinh'=>'Giới tính',
-            'cccd'=>'CCCD'
+            'cccd'=>'CCCD',
+            'avatar' => 'Ảnh đại diện'
         ];
     }
 
      protected function failedValidation(Validator $validator)
     {
+
+
         throw new HttpResponseException(response()->json([
             'status' => 'fail',
             'message' => 'Dữ liệu không hợp lệ',

@@ -24,18 +24,18 @@ class PhongTroRequest extends FormRequest
     public function rules(): array
     {
         return [
-        'ma_phong' => 'required|string',
-        'id_danh_muc' => 'required',
-        'id_users' => 'required',
-        'ten_phong_tro' => 'required|string',
-        'dia_chi' => 'required|string',
-        'anh_phong' => 'nullable|array',
-        'anh_phong.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-        'mo_ta' => 'nullable|string',
-        'dien_tich' => 'required',
-        'gia_tien' => 'required',
-        'trang_thai' => 'required|integer',
-        'so_luong_nguoi' => 'required|integer'
+            'ma_phong' => 'required|string',
+            'id_danh_muc' => 'required',
+            'id_users' => 'required',
+            'ten_phong_tro' => 'required|string',
+            'dia_chi' => 'required|string',
+            'anh_phong' => 'nullable|array',
+            'anh_phong.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'mo_ta' => 'nullable|string',
+            'dien_tich' => 'required',
+            'gia_tien' => 'required',
+            'trang_thai' => 'required|integer',
+            'so_luong_nguoi' => 'required|integer'
         ];
     }
 
@@ -49,7 +49,8 @@ class PhongTroRequest extends FormRequest
         ];
     }
 
-    public function attributes(){
+    public function attributes()
+    {
         return [
             'ma_phong' => 'Mã phòng',
             'id_danh_muc' => 'Mã danh mục',

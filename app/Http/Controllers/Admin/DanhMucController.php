@@ -37,7 +37,7 @@ class DanhMucController extends Controller
         ], 201);
     }
 
-    
+
     /**
      * Display the specified resource.
      */
@@ -49,9 +49,17 @@ class DanhMucController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(DanhMucRequest $request, string $id)
     {
-        //
+        $danhmuc = danhmuc::findOrFail($id);
+        $data= $request->all();
+        if($danhmuc->update($data)){
+            return response()->json([
+                'status'=>'success',
+                'messages'=>'Cập nhật danh mục thành công',
+                'data'=> $danhmuc
+            ]);
+        }
     }
 
     /**
@@ -59,6 +67,13 @@ class DanhMucController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $danhmuc = danhmuc::findOrFail($id);
+        if($danhmuc->delete()){
+            return response()->json([
+                'status' => 'success',
+                'message'=>'Xóa danh mục thành công',
+                'data'=>danhmuc::all()
+            ]);
+        }
     }
 }
